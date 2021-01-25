@@ -2,25 +2,29 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
+
+#set default options
 sns.set()   
 np.seterr('raise')
+
+# set up data (not processed)
 path = "Desktop/data/housingdata.csv"
 df = pd.read_csv(path)
 X = df[['RM','DIS']]
 X = np.column_stack((np.ones(X.shape[0]),X))
 Y = df['MEDV']
 
+#create zero param array
 params = np.zeros(X.shape[1])
 
 iter = 10000
 lr = 0.0047
 cost_log = []
+
+#fit model
 for i in range(iter):
-    #print(f"epoch: {i+1}")
     preds = np.dot(X,params)
-    
-    #for j in range(len(params)):
-    #    params[j] = params[j] - lr*((preds-Y)*X[:,j]).mean()
+
     try:
         params[0] = params[0] - lr*(preds-Y).mean()
         params[1] = params[1] - lr*((preds-Y)*X[:,1]).mean()
@@ -33,6 +37,7 @@ for i in range(iter):
         print(f"epoch:{i+1}  params : {params}  cost: {cost}")
         cost_log.append(cost)
 
+#plot cost
 plt.scatter(np.arange(len(cost_log)),cost_log)
 plt.show()
 
