@@ -25,7 +25,14 @@ k = int(input("enter k value"))
 #sort data based on distance and get closest k neighbours
 subset = sorted(distance_log,key= lambda item : item[1])[:k]
 
-#prints out classes for closest data points
-labels = [val[0] for val in subset]
-for idx in test:
-    print(np.array(train_df.iloc[idx,-3:]))
+#find majority classes in k neighbors
+res = np.zeros(3)
+#A list of the indices of the KNN are iterated through
+for label in [val[0] for val in subset]:
+    res += np.array(train_df.iloc[label,-3:])
+print(np.argmax(res))
+
+
+
+
+
